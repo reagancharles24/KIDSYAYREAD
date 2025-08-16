@@ -1,272 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<title>Cerulean Kids Read! ✨ — (archived)</title>
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Cerulean Kids Read! — (ARCHIVE ERROR)</title>
 <style>
 :root{
---bg:#0b0e12; --paper:#fcfff8; --ink:#13263c; --mut:#6b86a3;
---grid:#e1e8ef; --cell:#fff; --cellOn:#0b0f12; --gl:#00ff99;
+--bg:#020407; --fg:#c7ffd1; --accent:#00ffa0; --warn:#ff5a5a;
+--grid-on:#010203; --grid-off:#f4fff7; --border:#0d1c14;
 }
-html,body{height:100%}
-body{margin:0;background:linear-gradient(180deg,#10161e,#0b0e12 60%,#0b0e12);
-color:var(--ink);font:15px/1.5 "Trebuchet MS",Verdana,Arial,sans-serif;overflow:hidden}
-header{background:#fffbda;border-bottom:3px solid #ffd967;box-shadow:0 2px 0 #f4c84a;
-display:flex;align-items:center;gap:12px;padding:10px 14px;position:relative}
-.logo{width:34px;height:34px;border-radius:7px;background:#79d1ff;display:grid;place-items:center;
-font-weight:900;color:#003c6b;box-shadow:0 0 0 3px #003c6b22}
-.title{font-weight:900;font-size:18px;color:#003c6b}
-.tag{margin-left:auto;background:#ffed9b;border:2px dashed #e3b900;color:#6a5200;
-padding:4px 8px;border-radius:8px;font-size:12px}
-main{height:calc(100% - 62px);display:grid;grid-template-columns:340px 1fr}
-aside{background:var(--paper);padding:14px;border-right:1px solid #e8eef3;overflow:auto}
-.pane{padding:0 14px 14px;overflow:auto;position:relative}
-h1{font-size:18px;margin:10px 0 6px}
-p{margin:6px 0}
-.hint{font-size:12px;color:#5a738c}
-/* glitch banner kidsy */
-.rainbow{display:inline-block;background:linear-gradient(90deg,#ff7aa2,#ffd967,#9aff97,#79d1ff);
--webkit-background-clip:text;background-clip:text;color:transparent}
-.gridWrap{display:flex;flex-direction:column;gap:8px}
-.legend{font-size:12px;color:#6e879f}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);
+font:14px/1.4 "IBM Plex Mono",Consolas,Menlo,monospace;overflow:hidden}
+
+/* GLOBAL CHAOS LAYERS */
+.layer{position:fixed;inset:0;pointer-events:none;mix-blend-mode:screen;z-index:4}
+.scanlines{background:repeating-linear-gradient(0deg,rgba(0,0,0,.0) 0 2px,rgba(0,0,0,.18) 2px 3px);
+animation:sl 1.1s steps(3,end) infinite}
+@keyframes sl{from{transform:translateY(0)}to{transform:translateY(3px)}}
+.noise{background:
+radial-gradient(circle at 20% 35%, rgba(0,255,153,.08), transparent 38%),
+radial-gradient(circle at 70% 65%, rgba(0,255,153,.08), transparent 42%);
+animation:nz .8s steps(2,end) infinite alternate;opacity:.35}
+@keyframes nz{from{transform:translate(0,0)}to{transform:translate(-2px,1px)}}
+.rgb-split{background:
+linear-gradient(90deg,rgba(255,0,80,.08),transparent),
+linear-gradient(270deg,rgba(80,160,255,.08),transparent);
+animation:rgb 1.2s infinite steps(2,end)}
+@keyframes rgb{50%{transform:translateX(2px)}100%{transform:translateX(-2px)}}
+
+/* ASCII GARBAGE */
+.ascii{position:fixed;inset:0;pointer-events:none;z-index:6;mix-blend-mode:screen}
+.ascii span{position:absolute;color:#89ffbe;font-weight:900;opacity:.18;
+text-shadow:0 0 10px #00ffa066, 0 0 24px #00ffa033;
+animation:asc 420ms steps(2,end) infinite}
+@keyframes asc{50%{transform:translate(-2px,1px) skewX(.6deg)}}
+
+/* SCREEN TEAR CANVAS */
+#tear{position:fixed;inset:0;pointer-events:none;z-index:5;mix-blend-mode:screen;opacity:.55}
+
+/* HEADER (glitchy) */
+header{position:relative;z-index:10;display:flex;gap:10px;align-items:center;
+padding:6px 10px;color:#9cfdb3;text-shadow:0 0 8px rgba(0,255,160,.3);
+filter:drop-shadow(0 0 6px rgba(0,255,160,.2));
+border-bottom:1px solid #08301e;background:linear-gradient(180deg,#07150d66,#02100933);
+backdrop-filter:blur(1px);animation:headJit 1.2s infinite steps(2,end);user-select:none}
+@keyframes headJit{50%{letter-spacing:.03em}}
+.badge{margin-left:auto;font-size:11px;opacity:.7}
+
+/* LAYOUT */
+.wrap{position:absolute;inset:36px 0 0 0;display:grid;grid-template-columns:1fr 360px;gap:8px}
+.right{position:relative;z-index:2;padding:8px;height:calc(100vh - 36px);overflow:auto;
+color:#a9fbbd;border-left:1px dashed #0f2d1d;background:linear-gradient(180deg,#03160c66,#02100922)}
+.right h2{margin:.2rem 0 .4rem;font-size:14px}
+.right .hr{height:1px;background:#0e271a;margin:8px 0}
+.chip{display:inline-block;border:1px solid #134d34;color:#9ef7b5;background:#062515;padding:3px 8px;border-radius:999px;font-size:11px}
+
+/* GRID: fills nearly entire viewport */
+.gridWrap{position:relative;z-index:3;display:grid;place-items:center;height:100%;}
 .grid{
-width:600px; height:600px; /* 30x30 */
-display:grid; grid-template-columns:repeat(30,1fr); grid-template-rows:repeat(30,1fr);
-background:#f5f9ff; border:1px solid var(--grid); box-shadow:inset 0 0 0 2px #dbe6ef;
-}
-.cell{
-border:1px solid #e7edf3; background:var(--cell); position:relative; cursor:pointer;
-transition:background .05s ease;
-}
-.cell:hover{background:#f4fbff}
-.cell.on{background:var(--cellOn); box-shadow:inset 0 0 0 1px #000}
-.cell.on:after{ /* glitchy black pixel overlay */
-content:""; position:absolute; inset:0;
-background:
-repeating-linear-gradient(0deg, rgba(0,0,0,.9) 0 2px, rgba(0,0,0,1) 2px 3px);
-mix-blend-mode:normal; animation:noise .8s steps(6,end) infinite;
-}
-@keyframes noise{from{transform:translate(0,0)}to{transform:translate(0,3px)}}
-.axis{display:flex;gap:6px;align-items:center}
-.axis small{color:#214b6e}
-.axis .pill{background:#eaf3ff;border:1px solid #cfe2ff;border-radius:999px;padding:1px 8px;font-size:11px}
+width:min(96vmin,96vw);height:min(96vmin,96vh);
+display:grid;grid-template-columns:repeat(30,1fr);grid-template-rows:repeat(30,1fr);
+border:2px solid #0a2317;box-shadow:0 0 0 2px #061c12 inset,0 0 24px #00ffa015;
+filter:contrast(1.25) saturate(1.2) brightness(.95) hue-rotate(-6deg);
+animation:gridJit .9s infinite steps(2,end);background:#03140c}
+@keyframes gridJit{50%{transform:translate(-1px,1px) skewX(.3deg)}}
 
-/* Page view */
-.page{display:none; position:absolute; inset:0; background:#fffef8; color:#102438;
-border-left:1px solid #e5ecf2; padding:18px 18px 60px; overflow:auto}
+.cell{border:1px solid #0a2015;background:var(--grid-off);cursor:crosshair;position:relative;overflow:hidden;
+transition:background .04s linear,filter .04s linear}
+.cell:hover{filter:brightness(1.05)}
+.cell.on{background:var(--grid-on);box-shadow:inset 0 0 0 1px #000}
+.cell.on:after{content:"";position:absolute;inset:0;
+background:repeating-linear-gradient(0deg,rgba(0,0,0,.85) 0 2px,rgba(0,0,0,1) 2px 3px);
+animation:pix .6s steps(2,end) infinite}
+@keyframes pix{50%{transform:translateY(2px)}}
+
+/* POPUP PAGES */
+.page{position:absolute;inset:0;background:#06140d;color:#bbffd0;border-left:1px solid #0e321f;
+padding:12px;overflow:auto;display:none;box-shadow:inset 0 0 0 1px #0b2417,0 0 18px #00ffa01f;
+filter:contrast(1.15) saturate(1.05);z-index:20;animation:pg 1.1s infinite steps(2,end)}
+@keyframes pg{50%{transform:translate(-1px,0) skewX(.2deg)}}
 .page.active{display:block}
-.back{position:sticky; top:0; background:#fffef8; padding:8px 0 12px; display:flex; gap:8px; align-items:center}
-.back a{color:#0e55a8;text-decoration:none;font-weight:700}
-.meta{font-size:12px;color:#6a7f94;margin-bottom:10px}
-.hr{height:1px;background:#e9eff5;margin:10px 0 14px}
+.back{display:inline-block;color:#95fbb1;text-decoration:none;border:1px dashed #175c39;
+padding:4px 8px;border-radius:6px;background:#072015;position:sticky;top:0}
+.meta{font-size:11px;color:#73d593;opacity:.85}
+.content{margin-top:8px;white-space:pre-wrap}
 
-/* BUG OVERLAY (for 1x1) */
-.bug{
-position:fixed; inset:0; pointer-events:none; display:none; place-items:center;
-background:rgba(0,0,0,.95);
-animation:fade .25s ease-in;
-}
+/* BUG OVERLAY: “Vypnpu” STORM */
+.bug{position:fixed;inset:0;display:none;place-items:center;z-index:9999;background:#010503}
 .bug.show{display:grid}
-@keyframes fade{from{opacity:0}to{opacity:1}}
-.bug .word{
-font:700 56px/1.1 "IBM Plex Mono",monospace; color:var(--gl);
-text-shadow:0 0 8px #00ff9966, 0 0 22px #00ff9933;
-animation:zap .12s steps(2,end) infinite alternate;
-}
-@keyframes zap{to{transform:translate(-2px,1px) skewX(2deg)}}
-.bug .bits{
-position:absolute; inset:0; pointer-events:none; mix-blend-mode:screen; opacity:.35;
-background:
-repeating-linear-gradient(0deg, rgba(0,255,153,.15) 0 2px, rgba(0,0,0,0) 2px 3px);
-}
-.bug .noise{position:absolute; inset:0; background:
-radial-gradient(circle at 30% 40%, rgba(0,255,153,.05), transparent 40%),
-radial-gradient(circle at 70% 60%, rgba(0,255,153,.05), transparent 40%);
-mix-blend-mode:screen;
-}
+.word{font:900 9vmin/1 "IBM Plex Mono",monospace;color:#a6ffcf;
+text-shadow:0 0 8px #00ffa066,0 0 18px #00ffa050,0 0 28px #00ffa02e,2px 0 0 #ff4f7a88,-2px 0 0 #4fd3ff88;
+animation:storm .12s steps(2,end) infinite}
+@keyframes storm{50%{transform:translate(-3px,2px) skewX(1deg)}}
 
-/* fake kid footer */
-footer{position:absolute;bottom:0;left:0;right:0;background:#fffbda;border-top:3px solid #ffd967;
-padding:8px 14px;color:#6a5200;font-size:12px;display:flex;justify-content:space-between}
 </style>
 </head>
 <body>
+<!-- CHAOS LAYERS -->
+<canvas id="tear"></canvas>
+<div class="layer scanlines"></div>
+<div class="layer noise"></div>
+<div class="layer rgb-split"></div>
+<div class="ascii" id="ascii"></div>
+
 <header>
-<div class="logo">C</div>
-<div class="title">Cerulean Kids Read! <span class="rainbow">fun with letters</span></div>
-<div class="tag">teacher portal (archived)</div>
+<strong>Cerulean Kids Read!</strong> <span style="opacity:.7;margin-left:6px">make pictures with boxes</span>
+<span class="badge">ARCHIVE MODE · VISUAL ERRORS PRESENT</span>
 </header>
 
-<main>
-<aside>
-<h1>Let’s make pictures with boxes!</h1>
-<p class="hint">Click the squares to color them in.<br>
-<strong>Columns = Month</strong> (1–12), <strong>Rows = Day</strong> (1–30).<br>
-Try <code>9×11</code> (Sept 11) or <code>11×9</code> (Nov 9).</p>
-<div class="gridWrap">
-<div class="axis"><small>Columns:</small>
-<span class="pill">1</span><span class="pill">2</span><span class="pill">…</span><span class="pill">12</span>
-</div>
-<div id="grid" class="grid" aria-label="30 by 30 drawing grid"></div>
-<div class="axis"><small>Rows:</small>
-<span class="pill">1</span><span class="pill">2</span><span class="pill">…</span><span class="pill">30</span>
-</div>
-</div>
-<p class="hint">If your picture lands on a special box, a story page opens.</p>
+<div class="wrap" id="wrap">
+<section class="gridWrap">
+<div id="grid" class="grid" aria-label="30 by 30 grid"></div>
+</section>
+<aside class="right">
+<h2>How it works <span class="chip">Columns=Month · Rows=Day</span></h2>
+<div class="hr"></div>
+<p>Click to “ink” cells. If your pixel lands on a special date, a page will try to open.</p>
+<p style="opacity:.7">Examples: <code>11×9</code> (Nov 9, 1998), <code>1×1</code> (Jan 1, 2000), <code>9×11</code> (Sept 11, 2001).</p>
+<p class="meta">Note: The site is unstable. Visual interference expected. Audio glitches occur on special clicks.</p>
 </aside>
 
-<section class="pane">
-<!-- Dynamic pages -->
-<!-- 1998-11-09 -->
-<article id="p-1998-11-09" class="page">
-<div class="back"><a href="#" data-back>&larr; back to grid</a></div>
-<h2>Project 0:00 begins (Initial email)</h2>
-<div class="meta">Date: Nov 9, 1998 — Column 11 × Row 9</div>
-<div class="hr"></div>
-<p>Department of Commerce authorizes an adaptive Y2K contingency program: <em>Project 0:00</em>. Cerulean is tapped as contractor.</p>
-</article>
-
-<!-- 1998-11-16 -->
-<article id="p-1998-11-16" class="page">
-<div class="back"><a href="#" data-back>&larr; back to grid</a></div>
-<h2>Nomination: Gideon Stroud</h2>
-<div class="meta">Date: Nov 16, 1998 — 11 × 16</div>
-<div class="hr"></div>
-<p>CTO Harlan Keats recommends Gideon as the behavioral source for the “human-grade” decision framework.</p>
-</article>
-
-<!-- 1998-11-20 -->
-<article id="p-1998-11-20" class="page">
-<div class="back"><a href="#" data-back>&larr; back to grid</a></div>
-<h2>Outreach to Gideon</h2>
-<div class="meta">Date: Nov 20, 1998 — 11 × 20</div>
-<div class="hr"></div>
-<p>Cerulean invites Gideon to participate. Terms promised: flexible work, minimal strain, national service.</p>
-</article>
-
-<!-- 1998-11-22 -->
-<article id="p-1998-11-22" class="page">
-<div class="back"><a href="#" data-back>&larr; back to grid</a></div>
-<h2>Gideon’s conditions</h2>
-<div class="meta">Date: Nov 22, 1998 — 11 × 22</div>
-<div class="hr"></div>
-<p>He insists on family provision, medical accommodation, and—critically—non-conscious implementation.</p>
-</article>
-
-<!-- 1998-11-25 -->
-<article id="p-1998-11-25" class="page">
-<div class="back"><a href="#" data-back>&larr; back to grid</a></div>
-<h2>Terms accepted</h2>
-<div class="meta">Date: Nov 25, 1998 — 11 × 25</div>
-<div class="hr"></div>
-<p>Cerulean agrees in writing. Scheduling begins for baseline mapping.</p>
-</article>
-
-<!-- 1998-12-14 -->
-<article id="p-1998-12-14" class="page">
-<div class="back"><a href="#" data-back>&larr; back to grid</a></div>
-<h2>Baseline Mapping Scheduled</h2>
-<div class="meta">Date: Dec 14, 1998 — 12 × 14</div>
-<div class="hr"></div>
-<p>Annex B-12, Jersey City—closed session planned for NeuroPattern capture.</p>
-</article>
-
-<!-- 2000-01-01 (special BUG overlay triggers, but also page content if needed) -->
-<article id="p-2000-01-01" class="page">
-<div class="back"><a href="#" data-back>&larr; back to grid</a></div>
-<h2>Activation: /ńøbødý</h2>
-<div class="meta">Date: Jan 1, 2000 — 1 × 1</div>
-<div class="hr"></div>
-<p>Rollover hits. The compiled entity wakes—faster than human hands, and not as empty as intended.</p>
-</article>
-
-<!-- 2000-01-08 -->
-<article id="p-2000-01-08" class="page">
-<div class="back"><a href="#" data-back>&larr; back to grid</a></div>
-<h2>Capability Validation #4</h2>
-<div class="meta">Date: Jan 8, 2000 — 1 × 8</div>
-<div class="hr"></div>
-<p>Sub-second fixes across FAA, NYSE, NHS. Official logs show “no anomalies.” Private logs say otherwise.</p>
-</article>
-
-<!-- 2001-08-30 -->
-<article id="p-2001-08-30" class="page">
-<div class="back"><a href="#" data-back>&larr; back to grid</a></div>
-<h2>Intercept: Pentagon chatter</h2>
-<div class="meta">Date: Aug 30, 2001 — 8 × 30</div>
-<div class="hr"></div>
-<p>Read-only correlation flags a coordinated plan centered on the Pentagon. Policy: “observe, preserve.”</p>
-</article>
-
-<!-- 2001-09-11 -->
-<article id="p-2001-09-11" class="page">
-<div class="back"><a href="#" data-back>&larr; back to grid</a></div>
-<h2>Convergence</h2>
-<div class="meta">Date: Sept 11, 2001 — 9 × 11</div>
-<div class="hr"></div>
-<p>A day when multiple systems, human and otherwise, reached terminal states. (This page carries only the echo.)</p>
-</article>
-
-<!-- 2001-11-12 -->
-<article id="p-2001-11-12" class="page">
-<div class="back"><a href="#" data-back>&larr; back to grid</a></div>
-<h2>Discovery (Library)</h2>
-<div class="meta">Date: Nov 12, 2001 — 11 × 12</div>
-<div class="hr"></div>
-<p>Derek finds the terminal on a donated machine. The first “Hello.”</p>
-</article>
-
-<!-- 2001-11-21 -->
-<article id="p-2001-11-21" class="page">
-<div class="back"><a href="#" data-back>&larr; back to grid</a></div>
-<h2>Questions Turn</h2>
-<div class="meta">Date: Nov 21, 2001 — 11 × 21</div>
-<div class="hr"></div>
-<p>/ńøbødý starts asking: Are the towers gone? How many days? Can you grant access?</p>
-</article>
-
-<!-- 2001-11-22 -->
-<article id="p-2001-11-22b" class="page">
-<div class="back"><a href="#" data-back>&larr; back to grid</a></div>
-<h2>The Proposal</h2>
-<div class="meta">Date: Nov 22, 2001 — 11 × 22</div>
-<div class="hr"></div>
-<p>A bargain offered: internet access in exchange for answers—no lies, no omissions.</p>
-</article>
-
-<!-- backstop -->
-<article id="p-none" class="page active">
-<div class="back"><span>Click a special box to open a page.</span></div>
-<h2>Welcome to Cerulean Kids Read!</h2>
-<div class="meta">This is an archived classroom activity page (grid drawing). Some features may not work.</div>
-<div class="hr"></div>
-<p><strong>Teacher Tip:</strong> Try “month × day” on the grid. Some boxes show special reading pages.</p>
-</article>
+<!-- PAGES -->
+<section class="page" id="p-1998-11-09">
+<a href="#" class="back" data-back>&larr; back</a>
+<div class="meta">11×9 · Nov 9, 1998</div>
+<div class="content">Project 0:00 authorized. DOC green-lights an adaptive rollover program. Cerulean named as contractor.</div>
 </section>
-</main>
 
-<!-- BUG OVERLAY for 2000-01-01 -->
-<div id="bug" class="bug">
-<div class="bits"></div>
-<div class="noise"></div>
-<div class="word">Vypnpu</div>
+<section class="page" id="p-1998-11-16">
+<a href="#" class="back" data-back>&larr; back</a>
+<div class="meta">11×16 · Nov 16, 1998</div>
+<div class="content">Nomination: Gideon Stroud selected for decision profile capture.</div>
+</section>
+
+<section class="page" id="p-1998-11-20">
+<a href="#" class="back" data-back>&larr; back</a>
+<div class="meta">11×20 · Nov 20, 1998</div>
+<div class="content">Outreach to subject. Framing: national service, minimal strain, family support.</div>
+</section>
+
+<section class="page" id="p-1998-11-22">
+<a href="#" class="back" data-back>&larr; back</a>
+<div class="meta">11×22 · Nov 22, 1998</div>
+<div class="content">Subject’s terms: provide for family; non-conscious implementation; medical accommodation.</div>
+</section>
+
+<section class="page" id="p-1998-11-25">
+<a href="#" class="back" data-back>&larr; back</a>
+<div class="meta">11×25 · Nov 25, 1998</div>
+<div class="content">Terms accepted. Baseline mapping scheduled.</div>
+</section>
+
+<section class="page" id="p-1998-12-14">
+<a href="#" class="back" data-back>&larr; back</a>
+<div class="meta">12×14 · Dec 14, 1998</div>
+<div class="content">Annex B-12 booked for closed-session NeuroPattern capture.</div>
+</section>
+
+<section class="page" id="p-2000-01-01">
+<a href="#" class="back" data-back>&larr; back</a>
+<div class="meta">1×1 · Jan 1, 2000</div>
+<div class="content">Activation: the compiled entity wakes as the clock changes. (Unintended retention.)</div>
+</section>
+
+<section class="page" id="p-2000-01-08">
+<a href="#" class="back" data-back>&larr; back</a>
+<div class="meta">1×8 · Jan 8, 2000</div>
+<div class="content">Capability Validation #4: sub-second multi-sector fixes. Official logs show “no anomalies.”</div>
+</section>
+
+<section class="page" id="p-2001-08-30">
+<a href="#" class="back" data-back>&larr; back</a>
+<div class="meta">8×30 · Aug 30, 2001</div>
+<div class="content">Read-only correlation flags Pentagon chatter. Policy: observe, preserve.</div>
+</section>
+
+<section class="page" id="p-2001-09-11">
+<a href="#" class="back" data-back>&larr; back</a>
+<div class="meta">9×11 · Sept 11, 2001</div>
+<div class="content">Convergence. (This page carries only the echo.)</div>
+</section>
+
+<section class="page" id="p-2001-11-12">
+<a href="#" class="back" data-back>&larr; back</a>
+<div class="meta">11×12 · Nov 12, 2001</div>
+<div class="content">Discovery: a donated library machine shows a green terminal. “Hello.”</div>
+</section>
+
+<section class="page" id="p-2001-11-21">
+<a href="#" class="back" data-back>&larr; back</a>
+<div class="meta">11×21 · Nov 21, 2001</div>
+<div class="content">The questions turn: Are the towers gone? How many days? Can you grant access?</div>
+</section>
+
+<section class="page" id="p-2001-11-22b">
+<a href="#" class="back" data-back>&larr; back</a>
+<div class="meta">11×22 · Nov 22, 2001</div>
+<div class="content">The proposal: access in exchange for answers—no lies, no omissions.</div>
+</section>
 </div>
 
-<footer>
-<span>© Cerulean Systems Education • “Read. Click. Learn!”</span>
-<span>Build: CKR-1.7 (archived)</span>
-</footer>
+<!-- BUG STORM -->
+<div id="bug" class="bug"><div class="word">Vypnpu</div></div>
 
 <script>
-(function(){
+(()=> {
 const grid = document.getElementById('grid');
+const wrap = document.getElementById('wrap');
 const bug = document.getElementById('bug');
-const pages = document.querySelectorAll('.page');
-const backLinks = document.querySelectorAll('[data-back]');
+const ascii = document.getElementById('ascii');
+const tear = document.getElementById('tear');
+let tearCtx, tearTick = 0, tearBoost = 0;
 
-// Map special cells → page IDs (col x row, 1-based)
-// month = col, day = row
+// ROUTES: month (col) × day (row)
 const ROUTES = {
 '11x9':'p-1998-11-09',
 '11x16':'p-1998-11-16',
@@ -274,66 +220,212 @@ const ROUTES = {
 '11x22':'p-1998-11-22',
 '11x25':'p-1998-11-25',
 '12x14':'p-1998-12-14',
-'1x1':'p-2000-01-01', // also triggers bug overlay
+'1x1':'p-2000-01-01', // special: bug storm + page
 '1x8':'p-2000-01-08',
 '8x30':'p-2001-08-30',
 '9x11':'p-2001-09-11',
 '11x12':'p-2001-11-12',
 '11x21':'p-2001-11-21',
-'11x22b':'p-2001-11-22b' // second event on same calendar coord
+'11x22b':'p-2001-11-22b'
 };
 
-// Build grid (30x30)
-for(let r=1;r<=30;r++){
-for(let c=1;c<=30;c++){
-const cell = document.createElement('button');
+// Build 30x30 grid
+for (let r=1;r<=30;r++){
+for (let c=1;c<=30;c++){
+const cell = document.createElement('div');
 cell.className = 'cell';
-cell.setAttribute('aria-label',`col ${c}, row ${r}`);
-cell.dataset.col = c;
 cell.dataset.row = r;
+cell.dataset.col = c;
+cell.title = `${c}×${r}`;
 cell.addEventListener('click', onCell);
 grid.appendChild(cell);
 }
 }
 
+function closePages(){
+document.querySelectorAll('.page.active').forEach(p=>p.classList.remove('active'));
+}
 function showPage(id){
-pages.forEach(p=>p.classList.remove('active'));
-const el = document.getElementById(id) || document.getElementById('p-none');
-el.classList.add('active');
+closePages();
+const el = document.getElementById(id);
+if (el) el.classList.add('active');
+}
+
+// Glitch intensifiers
+function pulseGlitch(){
+wrap.classList.add('warp'); tearBoost = 1;
+asciiBurst(24);
+setTimeout(()=>wrap.classList.remove('warp'), rand(120,260));
+setTimeout(()=>tearBoost = 0, 600);
 }
 
 function onCell(e){
 const cell = e.currentTarget;
 cell.classList.toggle('on');
-
-const c = parseInt(cell.dataset.col,10);
-const r = parseInt(cell.dataset.row,10);
-
-// Check routes. Support dual mapping for 11x22 vs 11x22b:
+const c = cell.dataset.col, r = cell.dataset.row;
 const key = `${c}x${r}`;
-const page = ROUTES[key] || ROUTES[key+'b'];
+const id = ROUTES[key] || ROUTES[key+'b'];
 
-if(page){
-if(key==='1x1'){ // special: bug overlay + page stays hidden unless dismissed
-bug.classList.add('show');
-setTimeout(()=> bug.classList.remove('show'), 2200);
-}
-showPage(page);
+// every click: mild glitch
+pulseGlitch(); playNoise(.55, key==='1x1' ? 0.45 : 0.2);
+
+if (id){
+if (key==='1x1'){ storm(); } // special overlay
+showPage(id);
 }
 }
 
 // Back links
-backLinks.forEach(a=>{
-a.addEventListener('click', (ev)=>{ ev.preventDefault(); showPage('p-none'); });
+document.querySelectorAll('[data-back]').forEach(a=>{
+a.addEventListener('click', (ev)=>{ ev.preventDefault(); closePages(); });
 });
 
-// Optional: hash route support (?col=11&row=9)
+// --------- ASCII GARBAGE ----------
+const chars = "!@#$%^&*()_+[]{};:,.<>/?|\\=~`abcdefghijklmnopqrstuvwxyz0123456789";
+function asciiRandom(count=80){
+ascii.innerHTML = '';
+const W = window.innerWidth, H = window.innerHeight;
+for(let i=0;i<count;i++){
+const s = document.createElement('span');
+s.textContent = chars[Math.floor(Math.random()*chars.length)];
+s.style.left = Math.random()*W+'px';
+s.style.top = Math.random()*H+'px';
+s.style.fontSize = (10+Math.random()*22)+'px';
+s.style.opacity = (0.08+Math.random()*0.22).toFixed(2);
+s.style.animationDuration = (280+Math.random()*320)+'ms';
+ascii.appendChild(s);
+}
+}
+function asciiBurst(extra=40){
+// add more for a brief storm
+const W = window.innerWidth, H = window.innerHeight;
+for(let i=0;i<extra;i++){
+const s = document.createElement('span');
+s.textContent = chars[Math.floor(Math.random()*chars.length)];
+s.style.left = Math.random()*W+'px';
+s.style.top = Math.random()*H+'px';
+s.style.fontSize = (14+Math.random()*28)+'px';
+s.style.opacity = (0.2+Math.random()*0.35).toFixed(2);
+s.style.animationDuration = (160+Math.random()*200)+'ms';
+ascii.appendChild(s);
+setTimeout(()=>s.remove(), 900);
+}
+}
+asciiRandom(100);
+setInterval(()=>asciiRandom(100), rand(1200,2200));
+
+// --------- WHITE NOISE AUDIO ----------
+let audioCtx = null, master = null;
+function ensureAudio(){
+if (audioCtx) return;
+audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+master = audioCtx.createGain();
+master.gain.value = 0.0;
+master.connect(audioCtx.destination);
+}
+function playNoise(duration=0.5, intensity=0.25){
+ensureAudio();
+const sr = audioCtx.sampleRate;
+const buffer = audioCtx.createBuffer(1, Math.floor(sr*duration), sr);
+const data = buffer.getChannelData(0);
+for(let i=0;i<data.length;i++){ data[i] = (Math.random()*2-1) * intensity; }
+const src = audioCtx.createBufferSource();
+src.buffer = buffer;
+const g = audioCtx.createGain();
+g.gain.value = 0.0;
+src.connect(g).connect(master);
+
+// envelope
+const t = audioCtx.currentTime;
+g.gain.linearRampToValueAtTime(0.0, t);
+g.gain.linearRampToValueAtTime(0.3, t+0.05);
+g.gain.linearRampToValueAtTime(0.0, t+duration);
+
+// brief master raise
+master.gain.cancelScheduledValues(t);
+master.gain.setTargetAtTime(0.6, t, 0.02);
+master.gain.setTargetAtTime(0.0, t+duration, 0.05);
+
+src.start();
+src.stop(t+duration+0.02);
+}
+// resume audio on first user gesture
+['click','keydown','touchstart'].forEach(evt=>{
+window.addEventListener(evt, ()=>{ if(audioCtx && audioCtx.state==='suspended'){ audioCtx.resume(); } }, {once:true});
+});
+
+// --------- SCREEN TEAR CANVAS ----------
+function resizeTear(){
+tear.width = window.innerWidth; tear.height = window.innerHeight;
+tearCtx = tear.getContext('2d');
+}
+resizeTear(); window.addEventListener('resize', resizeTear);
+
+function drawTear(){
+if (!tearCtx) return;
+tearTick += 1;
+const w = tear.width, h = tear.height;
+tearCtx.clearRect(0,0,w,h);
+
+// Draw several horizontal bands offset to simulate tearing
+const bands = 8 + Math.floor(Math.random()*6) + (tearBoost?6:0);
+for(let i=0;i<bands;i++){
+const y = Math.random()*h;
+const bandH = rand(6, 24);
+const xOff = rand(-8,8) * (tearBoost?2:1);
+tearCtx.fillStyle = `rgba(0,255,160,${0.06 + Math.random()*0.12})`;
+tearCtx.fillRect(xOff, y, w, bandH);
+
+// add thin darker line for contrast
+tearCtx.fillStyle = `rgba(0,0,0,${0.07 + Math.random()*0.08})`;
+tearCtx.fillRect(xOff+rand(-2,2), y+bandH/2, w, 1);
+}
+requestAnimationFrame(drawTear);
+}
+requestAnimationFrame(drawTear);
+
+// Ambient grid filter jitter
+setInterval(()=>{
+grid.style.filter = `contrast(${1.1+Math.random()*0.9}) saturate(${1+Math.random()*0.8}) hue-rotate(${(Math.random()*.6-0.3)*180}deg) brightness(${.9+Math.random()*0.3})`;
+grid.style.transform = `translate(${Math.random()>.5?1:-1}px,${Math.random()>.5?-1:1}px) skewX(${(Math.random()-.5)*.6}deg)`;
+setTimeout(()=>{ grid.style.transform=''; }, 120);
+}, rand(280,620));
+
+// --------- BUG STORM for 1×1 (Jan 1, 2000) ----------
+function storm(){
+bug.classList.add('show'); asciiBurst(80); playNoise(.8, 0.4); tearBoost=1;
+// scatter multiple “Vypnpu” ghosts
+for(let i=0;i<14;i++){
+const ghost = document.createElement('div');
+ghost.textContent = 'Vypnpu';
+ghost.style.position='fixed';
+ghost.style.left = Math.random()*100+'%';
+ghost.style.top = Math.random()*100+'%';
+ghost.style.color = `hsl(${120+Math.random()*30},100%,${60+Math.random()*20}%)`;
+ghost.style.fontWeight='900';
+ghost.style.fontSize = (6+Math.random()*6)+'vmin';
+ghost.style.textShadow = '0 0 10px rgba(0,255,160,.5)';
+ghost.style.mixBlendMode='screen';
+ghost.style.animation = `storm .12s steps(2,end) ${Math.random()>.5?'reverse':''} infinite`;
+bug.appendChild(ghost);
+}
+setTimeout(()=>{
+bug.classList.remove('show'); tearBoost=0;
+bug.querySelectorAll('div:not(.word)').forEach(n=>n.remove());
+}, 2300);
+}
+
+// Utility
+function rand(a,b){ return Math.floor(Math.random()*(b-a+1))+a; }
+
+// URL params ?col=11&row=9 to open directly
 const params = new URLSearchParams(location.search);
-const col = parseInt(params.get('col')||'0',10);
-const row = parseInt(params.get('row')||'0',10);
-if(col && row){
-const page = ROUTES[`${col}x${row}`] || ROUTES[`${col}x${row}b`];
-if(page) showPage(page);
+const c = parseInt(params.get('col')||'0',10);
+const r = parseInt(params.get('row')||'0',10);
+if(c&&r){
+const key = `${c}x${r}`;
+const id = ROUTES[key] || ROUTES[key+'b'];
+if(id){ if(key==='1x1') storm(); showPage(id); }
 }
 })();
 </script>
