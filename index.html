@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Cerulean Kids Read! ✨ — (archived)</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<style>
+:root{
+--bg:#0b0e12; --paper:#fcfff8; --ink:#13263c; --mut:#6b86a3;
+--grid:#e1e8ef; --cell:#fff; --cellOn:#0b0f12; --gl:#00ff99;
+}
+html,body{height:100%}
+body{margin:0;background:linear-gradient(180deg,#10161e,#0b0e12 60%,#0b0e12);
+color:var(--ink);font:15px/1.5 "Trebuchet MS",Verdana,Arial,sans-serif;overflow:hidden}
+header{background:#fffbda;border-bottom:3px solid #ffd967;box-shadow:0 2px 0 #f4c84a;
+display:flex;align-items:center;gap:12px;padding:10px 14px;position:relative}
+.logo{width:34px;height:34px;border-radius:7px;background:#79d1ff;display:grid;place-items:center;
+font-weight:900;color:#003c6b;box-shadow:0 0 0 3px #003c6b22}
+.title{font-weight:900;font-size:18px;color:#003c6b}
+.tag{margin-left:auto;background:#ffed9b;border:2px dashed #e3b900;color:#6a5200;
+padding:4px 8px;border-radius:8px;font-size:12px}
+main{height:calc(100% - 62px);display:grid;grid-template-columns:340px 1fr}
+aside{background:var(--paper);padding:14px;border-right:1px solid #e8eef3;overflow:auto}
+.pane{padding:0 14px 14px;overflow:auto;position:relative}
+h1{font-size:18px;margin:10px 0 6px}
+p{margin:6px 0}
+.hint{font-size:12px;color:#5a738c}
+/* glitch banner kidsy */
+.rainbow{display:inline-block;background:linear-gradient(90deg,#ff7aa2,#ffd967,#9aff97,#79d1ff);
+-webkit-background-clip:text;background-clip:text;color:transparent}
+.gridWrap{display:flex;flex-direction:column;gap:8px}
+.legend{font-size:12px;color:#6e879f}
+.grid{
+width:600px; height:600px; /* 30x30 */
+display:grid; grid-template-columns:repeat(30,1fr); grid-template-rows:repeat(30,1fr);
+background:#f5f9ff; border:1px solid var(--grid); box-shadow:inset 0 0 0 2px #dbe6ef;
+}
+.cell{
+border:1px solid #e7edf3; background:var(--cell); position:relative; cursor:pointer;
+transition:background .05s ease;
+}
+.cell:hover{background:#f4fbff}
+.cell.on{background:var(--cellOn); box-shadow:inset 0 0 0 1px #000}
+.cell.on:after{ /* glitchy black pixel overlay */
+content:""; position:absolute; inset:0;
+background:
+repeating-linear-gradient(0deg, rgba(0,0,0,.9) 0 2px, rgba(0,0,0,1) 2px 3px);
+mix-blend-mode:normal; animation:noise .8s steps(6,end) infinite;
+}
+@keyframes noise{from{transform:translate(0,0)}to{transform:translate(0,3px)}}
+.axis{display:flex;gap:6px;align-items:center}
+.axis small{color:#214b6e}
+.axis .pill{background:#eaf3ff;border:1px solid #cfe2ff;border-radius:999px;padding:1px 8px;font-size:11px}
+
+/* Page view */
+.page{display:none; position:absolute; inset:0; background:#fffef8; color:#102438;
+border-left:1px solid #e5ecf2; padding:18px 18px 60px; overflow:auto}
+.page.active{display:block}
+.back{position:sticky; top:0; background:#fffef8; padding:8px 0 12px; display:flex; gap:8px; align-items:center}
+.back a{color:#0e55a8;text-decoration:none;font-weight:700}
+.meta{font-size:12px;color:#6a7f94;margin-bottom:10px}
+.hr{height:1px;background:#e9eff5;margin:10px 0 14px}
+
+/* BUG OVERLAY (for 1x1) */
+.bug{
+position:fixed; inset:0; pointer-events:none; display:none; place-items:center;
+background:rgba(0,0,0,.95);
+animation:fade .25s ease-in;
+}
+.bug.show{display:grid}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.bug .word{
+font:700 56px/1.1 "IBM Plex Mono",monospace; color:var(--gl);
+text-shadow:0 0 8px #00ff9966, 0 0 22px #00ff9933;
+animation:zap .12s steps(2,end) infinite alternate;
+}
+@keyframes zap{to{transform:translate(-2px,1px) skewX(2deg)}}
+.bug .bits{
+position:absolute; inset:0; pointer-events:none; mix-blend-mode:screen; opacity:.35;
+background:
+repeating-linear-gradient(0deg, rgba(0,255,153,.15) 0 2px, rgba(0,0,0,0) 2px 3px);
+}
+.bug .noise{position:absolute; inset:0; background:
+radial-gradient(circle at 30% 40%, rgba(0,255,153,.05), transparent 40%),
+radial-gradient(circle at 70% 60%, rgba(0,255,153,.05), transparent 40%);
+mix-blend-mode:screen;
+}
+
+/* fake kid footer */
+footer{position:absolute;bottom:0;left:0;right:0;background:#fffbda;border-top:3px solid #ffd967;
+padding:8px 14px;color:#6a5200;font-size:12px;display:flex;justify-content:space-between}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">C</div>
+<div class="title">Cerulean Kids Read! <span class="rainbow">fun with letters</span></div>
+<div class="tag">teacher portal (archived)</div>
+</header>
+
+<main>
+<aside>
+<h1>Let’s make pictures with boxes!</h1>
+<p class="hint">Click the squares to color them in.<br>
+<strong>Columns = Month</strong> (1–12), <strong>Rows = Day</strong> (1–30).<br>
+Try <code>9×11</code> (Sept 11) or <code>11×9</code> (Nov 9).</p>
+<div class="gridWrap">
+<div class="axis"><small>Columns:</small>
+<span class="pill">1</span><span class="pill">2</span><span class="pill">…</span><span class="pill">12</span>
+</div>
+<div id="grid" class="grid" aria-label="30 by 30 drawing grid"></div>
+<div class="axis"><small>Rows:</small>
+<span class="pill">1</span><span class="pill">2</span><span class="pill">…</span><span class="pill">30</span>
+</div>
+</div>
+<p class="hint">If your picture lands on a special box, a story page opens.</p>
+</aside>
+
+<section class="pane">
+<!-- Dynamic pages -->
+<!-- 1998-11-09 -->
+<article id="p-1998-11-09" class="page">
+<div class="back"><a href="#" data-back>&larr; back to grid</a></div>
+<h2>Project 0:00 begins (Initial email)</h2>
+<div class="meta">Date: Nov 9, 1998 — Column 11 × Row 9</div>
+<div class="hr"></div>
+<p>Department of Commerce authorizes an adaptive Y2K contingency program: <em>Project 0:00</em>. Cerulean is tapped as contractor.</p>
+</article>
+
+<!-- 1998-11-16 -->
+<article id="p-1998-11-16" class="page">
+<div class="back"><a href="#" data-back>&larr; back to grid</a></div>
+<h2>Nomination: Gideon Stroud</h2>
+<div class="meta">Date: Nov 16, 1998 — 11 × 16</div>
+<div class="hr"></div>
+<p>CTO Harlan Keats recommends Gideon as the behavioral source for the “human-grade” decision framework.</p>
+</article>
+
+<!-- 1998-11-20 -->
+<article id="p-1998-11-20" class="page">
+<div class="back"><a href="#" data-back>&larr; back to grid</a></div>
+<h2>Outreach to Gideon</h2>
+<div class="meta">Date: Nov 20, 1998 — 11 × 20</div>
+<div class="hr"></div>
+<p>Cerulean invites Gideon to participate. Terms promised: flexible work, minimal strain, national service.</p>
+</article>
+
+<!-- 1998-11-22 -->
+<article id="p-1998-11-22" class="page">
+<div class="back"><a href="#" data-back>&larr; back to grid</a></div>
+<h2>Gideon’s conditions</h2>
+<div class="meta">Date: Nov 22, 1998 — 11 × 22</div>
+<div class="hr"></div>
+<p>He insists on family provision, medical accommodation, and—critically—non-conscious implementation.</p>
+</article>
+
+<!-- 1998-11-25 -->
+<article id="p-1998-11-25" class="page">
+<div class="back"><a href="#" data-back>&larr; back to grid</a></div>
+<h2>Terms accepted</h2>
+<div class="meta">Date: Nov 25, 1998 — 11 × 25</div>
+<div class="hr"></div>
+<p>Cerulean agrees in writing. Scheduling begins for baseline mapping.</p>
+</article>
+
+<!-- 1998-12-14 -->
+<article id="p-1998-12-14" class="page">
+<div class="back"><a href="#" data-back>&larr; back to grid</a></div>
+<h2>Baseline Mapping Scheduled</h2>
+<div class="meta">Date: Dec 14, 1998 — 12 × 14</div>
+<div class="hr"></div>
+<p>Annex B-12, Jersey City—closed session planned for NeuroPattern capture.</p>
+</article>
+
+<!-- 2000-01-01 (special BUG overlay triggers, but also page content if needed) -->
+<article id="p-2000-01-01" class="page">
+<div class="back"><a href="#" data-back>&larr; back to grid</a></div>
+<h2>Activation: /ńøbødý</h2>
+<div class="meta">Date: Jan 1, 2000 — 1 × 1</div>
+<div class="hr"></div>
+<p>Rollover hits. The compiled entity wakes—faster than human hands, and not as empty as intended.</p>
+</article>
+
+<!-- 2000-01-08 -->
+<article id="p-2000-01-08" class="page">
+<div class="back"><a href="#" data-back>&larr; back to grid</a></div>
+<h2>Capability Validation #4</h2>
+<div class="meta">Date: Jan 8, 2000 — 1 × 8</div>
+<div class="hr"></div>
+<p>Sub-second fixes across FAA, NYSE, NHS. Official logs show “no anomalies.” Private logs say otherwise.</p>
+</article>
+
+<!-- 2001-08-30 -->
+<article id="p-2001-08-30" class="page">
+<div class="back"><a href="#" data-back>&larr; back to grid</a></div>
+<h2>Intercept: Pentagon chatter</h2>
+<div class="meta">Date: Aug 30, 2001 — 8 × 30</div>
+<div class="hr"></div>
+<p>Read-only correlation flags a coordinated plan centered on the Pentagon. Policy: “observe, preserve.”</p>
+</article>
+
+<!-- 2001-09-11 -->
+<article id="p-2001-09-11" class="page">
+<div class="back"><a href="#" data-back>&larr; back to grid</a></div>
+<h2>Convergence</h2>
+<div class="meta">Date: Sept 11, 2001 — 9 × 11</div>
+<div class="hr"></div>
+<p>A day when multiple systems, human and otherwise, reached terminal states. (This page carries only the echo.)</p>
+</article>
+
+<!-- 2001-11-12 -->
+<article id="p-2001-11-12" class="page">
+<div class="back"><a href="#" data-back>&larr; back to grid</a></div>
+<h2>Discovery (Library)</h2>
+<div class="meta">Date: Nov 12, 2001 — 11 × 12</div>
+<div class="hr"></div>
+<p>Derek finds the terminal on a donated machine. The first “Hello.”</p>
+</article>
+
+<!-- 2001-11-21 -->
+<article id="p-2001-11-21" class="page">
+<div class="back"><a href="#" data-back>&larr; back to grid</a></div>
+<h2>Questions Turn</h2>
+<div class="meta">Date: Nov 21, 2001 — 11 × 21</div>
+<div class="hr"></div>
+<p>/ńøbødý starts asking: Are the towers gone? How many days? Can you grant access?</p>
+</article>
+
+<!-- 2001-11-22 -->
+<article id="p-2001-11-22b" class="page">
+<div class="back"><a href="#" data-back>&larr; back to grid</a></div>
+<h2>The Proposal</h2>
+<div class="meta">Date: Nov 22, 2001 — 11 × 22</div>
+<div class="hr"></div>
+<p>A bargain offered: internet access in exchange for answers—no lies, no omissions.</p>
+</article>
+
+<!-- backstop -->
+<article id="p-none" class="page active">
+<div class="back"><span>Click a special box to open a page.</span></div>
+<h2>Welcome to Cerulean Kids Read!</h2>
+<div class="meta">This is an archived classroom activity page (grid drawing). Some features may not work.</div>
+<div class="hr"></div>
+<p><strong>Teacher Tip:</strong> Try “month × day” on the grid. Some boxes show special reading pages.</p>
+</article>
+</section>
+</main>
+
+<!-- BUG OVERLAY for 2000-01-01 -->
+<div id="bug" class="bug">
+<div class="bits"></div>
+<div class="noise"></div>
+<div class="word">Vypnpu</div>
+</div>
+
+<footer>
+<span>© Cerulean Systems Education • “Read. Click. Learn!”</span>
+<span>Build: CKR-1.7 (archived)</span>
+</footer>
+
+<script>
+(function(){
+const grid = document.getElementById('grid');
+const bug = document.getElementById('bug');
+const pages = document.querySelectorAll('.page');
+const backLinks = document.querySelectorAll('[data-back]');
+
+// Map special cells → page IDs (col x row, 1-based)
+// month = col, day = row
+const ROUTES = {
+'11x9':'p-1998-11-09',
+'11x16':'p-1998-11-16',
+'11x20':'p-1998-11-20',
+'11x22':'p-1998-11-22',
+'11x25':'p-1998-11-25',
+'12x14':'p-1998-12-14',
+'1x1':'p-2000-01-01', // also triggers bug overlay
+'1x8':'p-2000-01-08',
+'8x30':'p-2001-08-30',
+'9x11':'p-2001-09-11',
+'11x12':'p-2001-11-12',
+'11x21':'p-2001-11-21',
+'11x22b':'p-2001-11-22b' // second event on same calendar coord
+};
+
+// Build grid (30x30)
+for(let r=1;r<=30;r++){
+for(let c=1;c<=30;c++){
+const cell = document.createElement('button');
+cell.className = 'cell';
+cell.setAttribute('aria-label',`col ${c}, row ${r}`);
+cell.dataset.col = c;
+cell.dataset.row = r;
+cell.addEventListener('click', onCell);
+grid.appendChild(cell);
+}
+}
+
+function showPage(id){
+pages.forEach(p=>p.classList.remove('active'));
+const el = document.getElementById(id) || document.getElementById('p-none');
+el.classList.add('active');
+}
+
+function onCell(e){
+const cell = e.currentTarget;
+cell.classList.toggle('on');
+
+const c = parseInt(cell.dataset.col,10);
+const r = parseInt(cell.dataset.row,10);
+
+// Check routes. Support dual mapping for 11x22 vs 11x22b:
+const key = `${c}x${r}`;
+const page = ROUTES[key] || ROUTES[key+'b'];
+
+if(page){
+if(key==='1x1'){ // special: bug overlay + page stays hidden unless dismissed
+bug.classList.add('show');
+setTimeout(()=> bug.classList.remove('show'), 2200);
+}
+showPage(page);
+}
+}
+
+// Back links
+backLinks.forEach(a=>{
+a.addEventListener('click', (ev)=>{ ev.preventDefault(); showPage('p-none'); });
+});
+
+// Optional: hash route support (?col=11&row=9)
+const params = new URLSearchParams(location.search);
+const col = parseInt(params.get('col')||'0',10);
+const row = parseInt(params.get('row')||'0',10);
+if(col && row){
+const page = ROUTES[`${col}x${row}`] || ROUTES[`${col}x${row}b`];
+if(page) showPage(page);
+}
+})();
+</script>
+</body>
+</html>
